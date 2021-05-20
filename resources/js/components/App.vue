@@ -1,17 +1,9 @@
 <template>
-    <div class="container">
-        <v-app>
-            <v-alert type="error" :value="true">
-                Vuetify was installed properly
-            </v-alert>
-        </v-app>
-    </div>
+    <div>progress is everything</div>
 </template>
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+        name: "App"
     }
 </script>

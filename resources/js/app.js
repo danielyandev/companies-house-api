@@ -5,6 +5,8 @@
  */
 
 import Vue from 'vue'
+import routes from "./routes";
+import VueRouter from 'vue-router'
 import Vuetify from "vuetify"
 import 'vuetify/dist/vuetify.min.css'
 import '@mdi/font/css/materialdesignicons.min.css'
@@ -12,7 +14,7 @@ import '@mdi/font/css/materialdesignicons.min.css'
 window.Vue = Vue;
 
 Vue.use(Vuetify)
-
+Vue.use(VueRouter)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -33,4 +35,5 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 const app = new Vue({
     el: '#root',
     vuetify : new Vuetify(),
+    router: new VueRouter({routes, mode: 'history'})
 });

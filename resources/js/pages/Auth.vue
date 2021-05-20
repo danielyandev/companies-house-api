@@ -62,7 +62,7 @@
 
 <script>
     export default {
-        name: "Login",
+        name: "Auth",
         data: () => ({
             dialog: true,
             valid: true,

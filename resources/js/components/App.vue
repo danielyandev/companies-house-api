@@ -1,5 +1,5 @@
 <template>
-    <div>progress is everything</div>
+    <router-view></router-view>
 </template>
 
 <script>

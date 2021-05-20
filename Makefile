@@ -10,3 +10,10 @@ down:
 
 # Restart all containers
 restart: down up
+
+# Migrate database
+migrate:
+	$(SAIL) artisan migrate
+
+install_passport:
+	$(SAIL) artisan passport:install

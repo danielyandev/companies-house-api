@@ -20,9 +20,11 @@
             }
         </style>
     </head>
-    <body class="antialiased">
-        <div id="app" class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            <app></app>
+    <body>
+        <div id="root">
+            <v-app>
+                <app></app>
+            </v-app>
         </div>
 
         <script src="{{asset('js/app.js')}}"></script>

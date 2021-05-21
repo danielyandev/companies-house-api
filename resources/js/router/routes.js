@@ -14,12 +14,16 @@ const routes = [
     {
         path: "/home",
         name: "home",
-        component: Home
+        component: Home,
+        meta: {
+            requiresAuth: true
+        }
     },
+
+    // redirect to auth if nothing matched
     {
-        path: '/:catchAll(.*)',
-        component: Auth,
-        name: 'NotFound'
+        path: "/:catchAll(.*)",
+        redirect: '/auth'
     }
 ]
 

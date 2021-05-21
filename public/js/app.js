@@ -255,7 +255,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/routes/index.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router */ "./resources/js/router/index.js");
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuetify */ "./node_modules/vuetify/dist/vuetify.js");
 /* harmony import */ var vuetify__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(vuetify__WEBPACK_IMPORTED_MODULE_4__);
@@ -299,18 +299,52 @@ files.keys().map(function (key) {
 var app = new vue__WEBPACK_IMPORTED_MODULE_3__.default({
   el: '#root',
   vuetify: new (vuetify__WEBPACK_IMPORTED_MODULE_4___default())(),
-  router: new vue_router__WEBPACK_IMPORTED_MODULE_5__.default({
-    routes: _routes__WEBPACK_IMPORTED_MODULE_0__.default,
-    mode: 'history'
-  })
+  router: _router__WEBPACK_IMPORTED_MODULE_0__.default
 });
 
 /***/ }),
 
-/***/ "./resources/js/routes/index.js":
+/***/ "./resources/js/router/index.js":
 /*!**************************************!*\
-  !*** ./resources/js/routes/index.js ***!
+  !*** ./resources/js/router/index.js ***!
   \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./routes */ "./resources/js/router/routes.js");
+
+
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
+  routes: _routes__WEBPACK_IMPORTED_MODULE_0__.default,
+  mode: "history"
+}); // todo replace by store value
+
+var isLoggedIn = localStorage.getItem('access_token');
+router.beforeEach(function (to, from, next) {
+  // if not logged in and auth is required, redirect to login page
+  if (to.matched.some(function (record) {
+    return record.meta.requiresAuth;
+  }) && !isLoggedIn) {
+    next({
+      name: "auth"
+    });
+  } else {
+    next();
+  }
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
+
+/***/ }),
+
+/***/ "./resources/js/router/routes.js":
+/*!***************************************!*\
+  !*** ./resources/js/router/routes.js ***!
+  \***************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -332,11 +366,14 @@ var routes = [{
 }, {
   path: "/home",
   name: "home",
-  component: _pages_Home__WEBPACK_IMPORTED_MODULE_1__.default
-}, {
-  path: '/:catchAll(.*)',
-  component: _pages_Auth__WEBPACK_IMPORTED_MODULE_0__.default,
-  name: 'NotFound'
+  component: _pages_Home__WEBPACK_IMPORTED_MODULE_1__.default,
+  meta: {
+    requiresAuth: true
+  }
+}, // redirect to auth if nothing matched
+{
+  path: "/:catchAll(.*)",
+  redirect: '/auth'
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (routes);
 

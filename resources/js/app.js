@@ -5,7 +5,7 @@
  */
 
 import Vue from 'vue'
-import routes from "./routes";
+import router from "./router";
 import VueRouter from 'vue-router'
 import Vuetify from "vuetify"
 import 'vuetify/dist/vuetify.min.css'
@@ -35,5 +35,5 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 const app = new Vue({
     el: '#root',
     vuetify : new Vuetify(),
-    router: new VueRouter({routes, mode: 'history'})
+    router
 });

@@ -19,7 +19,7 @@
                                         <v-text-field v-model="loginForm.email" :rules="[rules.required, rules.email]" label="Email" required></v-text-field>
                                     </v-col>
                                     <v-col cols="12">
-                                        <v-text-field v-model="loginForm.password" :append-icon="passwordIcon" :rules="[rules.required, rules.min]" :type="passwordType" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="toggleShowPassword"></v-text-field>
+                                        <v-text-field v-model="loginForm.password" :append-icon="passwordIcon" :rules="[rules.required]" :type="passwordType" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="toggleShowPassword"></v-text-field>
                                     </v-col>
                                     <v-col class="d-flex" cols="12" sm="6" xsm="12">
                                     </v-col>
@@ -124,8 +124,16 @@
 
                 }
             },
-            register() {
-                console.log(this.registerForm)
+            async register() {
+                const data = await this.$store.dispatch('auth/register', this.registerForm)
+                if (data.hasOwnProperty('access_token')) {
+                    this.$router.push({name: 'home'})
+                }
+                else{
+                    const errors = Object.values(data.errors)
+                    this.registerErrors = errors.map(e => e[0])
+
+                }
             }
         }
     }

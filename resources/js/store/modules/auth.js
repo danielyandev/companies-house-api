@@ -30,13 +30,11 @@ const actions = {
 
     async register({commit, dispatch}, payload) {
         try{
-            const {data} = await register(payload)
-            await dispatch(this.login({
+            await register(payload)
+            return await dispatch('login', {
                 email: payload.email,
                 password: payload.password
-            }))
-            commit(types.FETCH_USER_SUCCESS, {user: data})
-            return data
+            })
         }catch (e){
             return e.response.data
         }

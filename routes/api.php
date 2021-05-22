@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:api')->group(function (){
     Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/register', [RegisterController::class, 'register']);
     Route::post('/refresh', [LoginController::class, 'refreshToken']);
 });
 

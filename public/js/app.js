@@ -2047,7 +2047,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     register: function register() {
-      console.log(this.registerForm);
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var data, errors;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this3.$store.dispatch('auth/register', _this3.registerForm);
+
+              case 2:
+                data = _context2.sent;
+
+                if (data.hasOwnProperty('access_token')) {
+                  _this3.$router.push({
+                    name: 'home'
+                  });
+                } else {
+                  errors = Object.values(data.errors);
+                  _this3.registerErrors = errors.map(function (e) {
+                    return e[0];
+                  });
+                }
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     }
   }
 });
@@ -2594,11 +2625,8 @@ var actions = {
     }))();
   },
   register: function register(_ref2, payload) {
-    var _this = this;
-
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-      var commit, dispatch, _yield$_register, data;
-
+      var commit, dispatch;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -2609,31 +2637,26 @@ var actions = {
               return (0,_api_requests_auth__WEBPACK_IMPORTED_MODULE_2__.register)(payload);
 
             case 4:
-              _yield$_register = _context2.sent;
-              data = _yield$_register.data;
-              _context2.next = 8;
-              return dispatch(_this.login({
+              _context2.next = 6;
+              return dispatch('login', {
                 email: payload.email,
                 password: payload.password
-              }));
-
-            case 8:
-              commit(_mutation_types__WEBPACK_IMPORTED_MODULE_1__.FETCH_USER_SUCCESS, {
-                user: data
               });
-              return _context2.abrupt("return", data);
 
-            case 12:
-              _context2.prev = 12;
+            case 6:
+              return _context2.abrupt("return", _context2.sent);
+
+            case 9:
+              _context2.prev = 9;
               _context2.t0 = _context2["catch"](1);
               return _context2.abrupt("return", _context2.t0.response.data);
 
-            case 15:
+            case 12:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[1, 12]]);
+      }, _callee2, null, [[1, 9]]);
     }))();
   },
   fetchUser: function fetchUser(_ref3) {
@@ -4403,10 +4426,7 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: {
                                           "append-icon": _vm.passwordIcon,
-                                          rules: [
-                                            _vm.rules.required,
-                                            _vm.rules.min
-                                          ],
+                                          rules: [_vm.rules.required],
                                           type: _vm.passwordType,
                                           name: "input-10-1",
                                           label: "Password",

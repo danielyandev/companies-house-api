@@ -1,9 +1,6 @@
 <template>
     <div>
-        <v-app-bar>
-            <v-spacer></v-spacer>
-            <v-btn color="primary">Logout</v-btn>
-        </v-app-bar>
+        <v-header></v-header>
         <v-container>
             <v-card elevation="3">
 
@@ -41,26 +38,17 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
+    import VHeader from "../components/VHeader";
 
     export default {
         name: "Home",
-        async beforeMount() {
-            if (!this.user){
-                await this.$store.dispatch('auth/fetchUser')
-            }
-        },
+        components: {VHeader},
         data() {
             return {
                 loading: false,
                 searchField: "",
                 companies: []
             }
-        },
-        computed: {
-            ...mapGetters({
-                user: 'auth/user'
-            })
         },
         methods: {
             search() {

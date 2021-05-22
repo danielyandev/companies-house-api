@@ -57,8 +57,27 @@ class LoginController extends Controller
         return response()->json($token);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function refreshToken(Request $request)
     {
         return $this->authService->refreshToken($request->refresh_token);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        $token = $request->user()->token();
+        // revoke token
+        $token->revoke();
+
+        return response([], 200);
     }
 }

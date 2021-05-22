@@ -61,11 +61,15 @@ const actions = {
     },
 
     async logout({commit}) {
+        let success = false
         try {
             await logout()
+            success = true
         } catch (e) {
         }
+
         commit(types.LOGOUT)
+        return success
     }
 
 }

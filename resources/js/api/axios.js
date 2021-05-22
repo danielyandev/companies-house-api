@@ -17,11 +17,11 @@ axios.interceptors.response.use(response => response, error => {
     const { status } = error.response
 
     if (status === 401) {
-        store.dispatch('auth/refreshToken').then(data => {
-            if (!data.hasOwnProperty('access_token')){
-                router.push({name: 'auth'})
-            }
-        })
+        // store.dispatch('auth/refreshToken').then(data => {
+        //     if (!data.hasOwnProperty('access_token')){
+        //         router.push({name: 'auth'})
+        //     }
+        // })
     }
 
     return Promise.reject(error)

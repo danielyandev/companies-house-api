@@ -2190,7 +2190,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _components_VHeader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/VHeader */ "./resources/js/components/VHeader.vue");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_VHeader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/VHeader */ "./resources/js/components/VHeader.vue");
+/* harmony import */ var _api_requests_companies__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../api/requests/companies */ "./resources/js/api/requests/companies.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2231,27 +2256,84 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "Home",
   components: {
-    VHeader: _components_VHeader__WEBPACK_IMPORTED_MODULE_0__.default
+    VHeader: _components_VHeader__WEBPACK_IMPORTED_MODULE_1__.default
   },
   data: function data() {
     return {
       loading: false,
       searchField: "",
-      companies: []
+      companies: [],
+      currentPage: 1,
+      perPage: 10,
+      totalResults: 0
     };
+  },
+  computed: {
+    totalPages: function totalPages() {
+      var total = Math.floor(this.totalResults / this.perPage);
+
+      if (this.totalResults % this.perPage !== 0) {
+        total++;
+      }
+
+      return total--;
+    }
+  },
+  watch: {
+    currentPage: function currentPage(page) {
+      this.search(page);
+    }
   },
   methods: {
     search: function search() {
-      var _this = this;
+      var _arguments = arguments,
+          _this = this;
 
-      console.log(this.searchField);
-      this.loading = true;
-      setTimeout(function () {
-        _this.loading = false;
-      }, 3000);
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var page, start_index, _yield$_search, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                page = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : 1;
+
+                if (_this.searchField) {
+                  _context.next = 3;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 3:
+                _this.loading = true;
+                _this.currentPage = page;
+                start_index = page * _this.perPage - _this.perPage;
+                _context.next = 8;
+                return (0,_api_requests_companies__WEBPACK_IMPORTED_MODULE_2__.search)(_this.searchField, 10, start_index);
+
+              case 8:
+                _yield$_search = _context.sent;
+                data = _yield$_search.data;
+                _this.companies = data.items || [];
+
+                if (page === 1) {
+                  _this.totalResults = data.total_results || 0;
+                }
+
+                _this.loading = false;
+
+              case 13:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
     }
   }
 });
@@ -2289,14 +2371,11 @@ axios__WEBPACK_IMPORTED_MODULE_0___default().interceptors.response.use(function 
 }, function (error) {
   var status = error.response.status;
 
-  if (status === 401) {
-    _store__WEBPACK_IMPORTED_MODULE_1__.default.dispatch('auth/refreshToken').then(function (data) {
-      if (!data.hasOwnProperty('access_token')) {
-        _router__WEBPACK_IMPORTED_MODULE_2__.default.push({
-          name: 'auth'
-        });
-      }
-    });
+  if (status === 401) {// store.dispatch('auth/refreshToken').then(data => {
+    //     if (!data.hasOwnProperty('access_token')){
+    //         router.push({name: 'auth'})
+    //     }
+    // })
   }
 
   return Promise.reject(error);
@@ -2460,6 +2539,65 @@ function _refreshToken() {
     }, _callee5);
   }));
   return _refreshToken.apply(this, arguments);
+}
+
+/***/ }),
+
+/***/ "./resources/js/api/requests/companies.js":
+/*!************************************************!*\
+  !*** ./resources/js/api/requests/companies.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "search": () => (/* binding */ search)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+function search(_x) {
+  return _search.apply(this, arguments);
+}
+
+function _search() {
+  _search = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(q) {
+    var items_per_page,
+        start_index,
+        _args = arguments;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            items_per_page = _args.length > 1 && _args[1] !== undefined ? _args[1] : 20;
+            start_index = _args.length > 2 && _args[2] !== undefined ? _args[2] : 0;
+            _context.next = 4;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/companies/search', {
+              q: q,
+              items_per_page: items_per_page,
+              start_index: start_index
+            });
+
+          case 4:
+            return _context.abrupt("return", _context.sent);
+
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+  return _search.apply(this, arguments);
 }
 
 /***/ }),
@@ -4984,7 +5122,9 @@ var render = function() {
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
-                      return _vm.search($event)
+                      return (function() {
+                        return _vm.search()
+                      })($event)
                     }
                   }
                 },
@@ -5036,22 +5176,76 @@ var render = function() {
                   _c("v-simple-table", [
                     _c("thead", [
                       _c("tr", [
-                        _c("th", { staticClass: "text-left" }, [_vm._v("ID")]),
+                        _c("th", { staticClass: "text-left" }, [
+                          _vm._v("Number")
+                        ]),
                         _vm._v(" "),
-                        _c("th", { staticClass: "text-left" }, [_vm._v("Name")])
+                        _c("th", { staticClass: "text-left" }, [
+                          _vm._v("Name")
+                        ]),
+                        _vm._v(" "),
+                        _c("th", { staticClass: "text-left" }, [
+                          _vm._v("Status")
+                        ])
                       ])
                     ]),
                     _vm._v(" "),
-                    _c("tbody", [
-                      !_vm.companies.length
-                        ? _c("tr", { staticClass: "text-center" }, [
-                            _c("td", { attrs: { colspan: "2" } }, [
-                              _vm._v("No data found")
+                    _c(
+                      "tbody",
+                      [
+                        !_vm.companies.length
+                          ? _c("tr", { staticClass: "text-center" }, [
+                              _c("td", { attrs: { colspan: "3" } }, [
+                                _vm._v("No data found, search to fetch results")
+                              ])
                             ])
-                          ])
-                        : _vm._e()
-                    ])
-                  ])
+                          : _vm._l(_vm.companies, function(company) {
+                              return _c("tr", [
+                                _c("td", [
+                                  _vm._v(_vm._s(company.company_number))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(company.title))]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  [
+                                    _c("v-badge", {
+                                      attrs: {
+                                        content: company.company_status,
+                                        color:
+                                          company.company_status === "active"
+                                            ? "green"
+                                            : "pink"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ])
+                            })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "text-center" },
+                    [
+                      _c("v-pagination", {
+                        attrs: { length: _vm.totalPages, "total-visible": 7 },
+                        model: {
+                          value: _vm.currentPage,
+                          callback: function($$v) {
+                            _vm.currentPage = $$v
+                          },
+                          expression: "currentPage"
+                        }
+                      })
+                    ],
+                    1
+                  )
                 ],
                 1
               )

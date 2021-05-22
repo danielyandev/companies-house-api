@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Services\AuthService;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -21,6 +23,8 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    protected $authService;
+
     /**
      * Where to redirect users after login.
      *
@@ -31,10 +35,30 @@ class LoginController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param AuthService $authService
      */
-    public function __construct()
+    public function __construct(AuthService $authService)
     {
         $this->middleware('guest')->except('logout');
+        $this->authService = $authService;
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        $this->clearLoginAttempts($request);
+        $token = $this->authService->getToken($request->email, $request->password);
+
+        return response()->json($token);
+    }
+
+    public function refreshToken(Request $request)
+    {
+        return $this->authService->refreshToken($request->refresh_token);
     }
 }

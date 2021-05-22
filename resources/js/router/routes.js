@@ -4,12 +4,15 @@ import Home from "../pages/Home";
 const routes = [
     {
         path: "/",
-        redirect: "/auth"
+        redirect: "/home"
     },
     {
         path: "/auth",
         name: "auth",
-        component: Auth
+        component: Auth,
+        meta: {
+            requiresGuest: true
+        }
     },
     {
         path: "/home",

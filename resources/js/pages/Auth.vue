@@ -11,6 +11,9 @@
                     <v-card class="px-4">
                         <v-card-text>
                             <v-form ref="loginForm" v-model="valid" lazy-validation>
+                                <v-alert v-if="loginErrors.length" dismissible type="error">
+                                    <p v-for="error in loginErrors">{{error}}</p>
+                                </v-alert>
                                 <v-row>
                                     <v-col cols="12">
                                         <v-text-field v-model="loginForm.email" :rules="[rules.required, rules.email]" label="Email" required></v-text-field>
@@ -33,6 +36,9 @@
                     <v-card class="px-4">
                         <v-card-text>
                             <v-form ref="registerForm" v-model="valid" lazy-validation>
+                                <v-alert v-if="registerErrors.length" dismissible type="error">
+                                    <p v-for="error in registerErrors">{{error}}</p>
+                                </v-alert>
                                 <v-row>
                                     <v-col cols="12">
                                         <v-text-field placeholder="" v-model="registerForm.name" :rules="[rules.required]" label="Name" required></v-text-field>
@@ -44,7 +50,7 @@
                                         <v-text-field v-model="registerForm.password" :append-icon="passwordIcon" :rules="[rules.required, rules.min]" :type="passwordType" name="input-10-1" label="Password" hint="At least 8 characters" counter @click:append="toggleShowPassword"></v-text-field>
                                     </v-col>
                                     <v-col cols="12">
-                                        <v-text-field block v-model="verify" :append-icon="passwordIcon" :rules="[rules.required, passwordMatch]" :type="passwordType" name="input-10-1" label="Confirm Password" counter @click:append="toggleShowPassword"></v-text-field>
+                                        <v-text-field block v-model="registerForm.password_confirmation" :append-icon="passwordIcon" :rules="[rules.required, passwordMatch]" :type="passwordType" name="input-10-1" label="Confirm Password" counter @click:append="toggleShowPassword"></v-text-field>
                                     </v-col>
                                     <v-spacer></v-spacer>
                                     <v-col class="d-flex ml-auto" cols="12" sm="3" xsm="12">
@@ -67,7 +73,6 @@
             dialog: true,
             valid: true,
             showPassword: false,
-            verify: "",
             tab: 0,
             tabs: [
                 {name:"Login", icon:"mdi-account"},
@@ -76,12 +81,15 @@
             registerForm: {
                 name: "",
                 email: "",
-                password: ""
+                password: "",
+                password_confirmation: ""
             },
             loginForm: {
                 email: "",
                 password: ""
             },
+            loginErrors: [],
+            registerErrors: [],
 
             rules: {
                 required: value => !!value || "Required.",
@@ -91,7 +99,7 @@
         }),
         computed: {
             passwordMatch() {
-                return () => this.password === this.verify || "Password must match";
+                return () => (this.registerForm.password && this.registerForm.password === this.registerForm.password_confirmation) || "Password must match";
             },
             passwordIcon() {
                 return this.showPassword ? "mdi-eye" : "mdi-eye-off"
@@ -101,17 +109,20 @@
             }
         },
         methods: {
-            reset() {
-                this.$refs.form.reset();
-            },
-            resetValidation() {
-                this.$refs.form.resetValidation();
-            },
             toggleShowPassword() {
                 this.showPassword = !this.showPassword
             },
-            login() {
-                console.log(this.loginForm)
+            async login() {
+                const data = await this.$store.dispatch('auth/login', this.loginForm)
+
+                if (data.hasOwnProperty('access_token')) {
+                    this.$router.push({name: 'home'})
+                }
+                else{
+                    const errors = Object.values(data.errors)
+                    this.loginErrors = errors.map(e => e[0])
+
+                }
             },
             register() {
                 console.log(this.registerForm)

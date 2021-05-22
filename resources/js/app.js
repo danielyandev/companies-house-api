@@ -4,12 +4,14 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-import Vue from 'vue'
+import Vue from "vue"
 import router from "./router";
-import VueRouter from 'vue-router'
-import Vuetify from "vuetify"
-import 'vuetify/dist/vuetify.min.css'
-import '@mdi/font/css/materialdesignicons.min.css'
+import VueRouter from "vue-router";
+import Vuetify from "vuetify";
+import store from "./store";
+import "./api/axios";
+import "vuetify/dist/vuetify.min.css";
+import "@mdi/font/css/materialdesignicons.min.css";
 
 window.Vue = Vue;
 
@@ -35,5 +37,6 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 const app = new Vue({
     el: '#root',
     vuetify : new Vuetify(),
-    router
+    router,
+    store
 });

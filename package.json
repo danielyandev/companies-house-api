@@ -27,6 +27,7 @@
     "dependencies": {
         "@mdi/font": "^5.9.55",
         "vue-router": "^3.5.1",
-        "vuetify": "^2.5.0"
+        "vuetify": "^2.5.0",
+        "vuex": "^3.6.2"
     }
 }

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '../store'
+import router from "../router";
 
 // Request interceptor
 axios.interceptors.request.use(request => {
@@ -16,7 +17,11 @@ axios.interceptors.response.use(response => response, error => {
     const { status } = error.response
 
     if (status === 401) {
-        store.dispatch('refreshToken')
+        store.dispatch('auth/refreshToken').then(data => {
+            if (!data.hasOwnProperty('access_token')){
+                router.push({name: 'auth'})
+            }
+        })
     }
 
     return Promise.reject(error)

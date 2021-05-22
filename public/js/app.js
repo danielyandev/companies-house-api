@@ -2269,6 +2269,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../store */ "./resources/js/store/index.js");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../router */ "./resources/js/router/index.js");
+
 
  // Request interceptor
 
@@ -2288,7 +2290,13 @@ axios__WEBPACK_IMPORTED_MODULE_0___default().interceptors.response.use(function 
   var status = error.response.status;
 
   if (status === 401) {
-    _store__WEBPACK_IMPORTED_MODULE_1__.default.dispatch('refreshToken');
+    _store__WEBPACK_IMPORTED_MODULE_1__.default.dispatch('auth/refreshToken').then(function (data) {
+      if (!data.hasOwnProperty('access_token')) {
+        _router__WEBPACK_IMPORTED_MODULE_2__.default.push({
+          name: 'auth'
+        });
+      }
+    });
   }
 
   return Promise.reject(error);
@@ -2792,13 +2800,13 @@ var actions = {
   },
   refreshToken: function refreshToken(_ref4) {
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
-      var commit, _yield$_refreshToken, data;
+      var commit, getters, _yield$_refreshToken, data;
 
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
         while (1) {
           switch (_context4.prev = _context4.next) {
             case 0:
-              commit = _ref4.commit;
+              commit = _ref4.commit, getters = _ref4.getters;
               _context4.prev = 1;
               _context4.next = 4;
               return (0,_api_requests_auth__WEBPACK_IMPORTED_MODULE_2__.refreshToken)(getters.refresh_token);

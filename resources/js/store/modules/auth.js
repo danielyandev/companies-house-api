@@ -50,7 +50,7 @@ const actions = {
         }
     },
 
-    async refreshToken({commit}) {
+    async refreshToken({commit, getters}) {
         try{
             const {data} = await refreshToken(getters.refresh_token)
             commit(types.SAVE_TOKEN, data)

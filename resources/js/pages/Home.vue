@@ -41,14 +41,26 @@
 </template>
 
 <script>
+    import {mapGetters} from "vuex";
+
     export default {
         name: "Home",
+        async beforeMount() {
+            if (!this.user){
+                await this.$store.dispatch('auth/fetchUser')
+            }
+        },
         data() {
             return {
                 loading: false,
                 searchField: "",
                 companies: []
             }
+        },
+        computed: {
+            ...mapGetters({
+                user: 'auth/user'
+            })
         },
         methods: {
             search() {
